@@ -57,7 +57,7 @@ dependencies:
   shared_preferences: ^2.2.1
 
   # Connectivity
-  connectivity_plus: ^4.0.2
+  internet_connection_checker: ^1.0.0+1
 
   # Localization
   intl: ^0.18.0
