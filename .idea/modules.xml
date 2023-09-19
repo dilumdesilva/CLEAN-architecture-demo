@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/clean_architecture_demo.iml" filepath="$PROJECT_DIR$/clean_architecture_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/clean_architecture_demo_android.iml" filepath="$PROJECT_DIR$/android/clean_architecture_demo_android.iml" />
     </modules>
   </component>
 </project>
