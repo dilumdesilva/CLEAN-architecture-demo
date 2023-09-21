@@ -1,11 +1,14 @@
+import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
 import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-void main() {
-  _initializeFirebase();
+Future<void> main() async {
+  await _initializeFirebase();
+  await initAppModule();
+  runApp(const MainApp());
   runApp(const MainApp());
 }
 

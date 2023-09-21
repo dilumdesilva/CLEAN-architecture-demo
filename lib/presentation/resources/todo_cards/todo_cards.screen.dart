@@ -1,5 +1,13 @@
+import 'package:clean_architecture_demo/app/di.dart';
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
+import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
+import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
+import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards_state.dart';
+import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_crads_cubit.dart';
 import 'package:clean_architecture_demo/presentation/resources/values_manager.dart';
+import 'package:clean_architecture_demo/presentation/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TodoCardsSecreen extends StatefulWidget {
   const TodoCardsSecreen({
@@ -11,11 +19,21 @@ class TodoCardsSecreen extends StatefulWidget {
 }
 
 class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
-  int mockNumberOfCards = 10;
+  late TodoCardsCubit _todoCardsCubit;
 
   @override
   void initState() {
     super.initState();
+    initialise();
+  }
+
+  Future<void> initialise() async {
+    if (mounted) {
+      _todoCardsCubit =
+          TodoCardsCubit(todoRepository: getItInstance.get<TodoRepository>());
+
+      _todoCardsCubit.getTodoCards();
+    }
   }
 
   @override
@@ -28,12 +46,38 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          //TODO: add from localisation
           title: const Text('My TODOs'),
           actions: [
             _buildCalendarAppBarButton(),
           ],
         ),
-        body: _buildBody(),
+        body: BlocProvider(
+            create: (context) => _todoCardsCubit,
+            child: BlocBuilder<TodoCardsCubit, TodoCardsState>(
+                builder: (context, state) {
+              switch (state.runtimeType) {
+                case GetTodoCardsInProgress:
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                case GetTodoCardsSuccess:
+                  final todoCards = (state as GetTodoCardsSuccess).todoCards;
+                  return _buildBody(todoCards ?? []);
+                case GetTodoCardsFailure:
+                  return const Center(
+                    child: Column(
+                      children: [
+                        Icon(Icons.error, size: 50, color: Colors.red),
+                        //TODO: add from localisation
+                        Text('Failed to fetch todo cards'),
+                      ],
+                    ),
+                  );
+              }
+
+              return Container();
+            })),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
               //TODO: build the navigation to next screen
@@ -56,21 +100,19 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(List<TodoModel> todoCards) {
     return LayoutBuilder(builder: (context, dimens) {
       return ListView.builder(
-        itemCount: mockNumberOfCards,
+        itemCount: todoCards.length,
         itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 8.0),
-            child: _buildCard(),
-          );
+          return _buildCard(todoCards[index]);
         },
       );
     });
   }
 
-  Widget _buildCard() {
+  Widget _buildCard(TodoModel todoCard) {
+    double todoCardTextAreaWidth = getScreenWidth(context) * 0.7;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
       child: Dismissible(
@@ -82,16 +124,34 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 12.0, left: 20.0, right: 20.0),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 12.0, left: 20.0, right: 20.0),
                   child: SizedBox(
-                    height: 80,
+                    height: 100,
+                    width: todoCardTextAreaWidth,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Title'),
-                        SizedBox(height: 8),
-                        Text('Description'),
+                        Text(todoCard.title,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        Text(todoCard.description,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 14)),
+                        const SizedBox(height: 24),
+
+                        //TODO: get like todoCard.createdDate using timestamp
+                        Text(getTodoCardDisplayDate(DateTime.now()),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 14)),
                       ],
                     ),
                   ),
@@ -103,10 +163,11 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
                       //TODO: show toast
                       //Pin the card to top
                     },
-                    child: const Icon(
-                      Icons.pin_drop,
-                      size: 24,
-                      color: Colors.red,
+                    child: ImageIcon(
+                      AssetImage(AssetsManager.icons.pinIcon),
+                      color: Colors
+                          .red, //TODO: change the colour based on pinned or not
+                      size: 20,
                     ),
                   ),
                 ),
