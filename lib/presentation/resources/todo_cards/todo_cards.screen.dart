@@ -116,7 +116,53 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),
       child: Dismissible(
-        key: const Key('card'), //TODO: replace with snapshot id
+        key: const Key('card'),
+        //direction: DismissDirection.endToStart,
+        secondaryBackground: Container(
+            color: Colors.red,
+            child: const Align(
+              alignment: Alignment.centerRight,
+              child: Padding(
+                padding: EdgeInsets.only(right: 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.delete, color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.only(top: 4.0),
+                      child:
+                          Text('Delete', style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                ),
+              ),
+            )),
+        background: Container(
+            color: Colors.green,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ImageIcon(
+                      AssetImage(AssetsManager.icons.pinIcon),
+                      color: Colors.white,
+                      //TODO: change the colour based on pinned or not
+                      size: 20,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 4.0),
+                      child: Text('Pin to top',
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ],
+                ),
+              ),
+            )), //TODO: replace with snapshot id
         child: Card(
             elevation: 2,
             color: Colors.grey.shade100,
