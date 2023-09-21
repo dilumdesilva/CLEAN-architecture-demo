@@ -1,5 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
+
+/// gives the current screen width
+double getScreenWidth(BuildContext context) =>
+    MediaQuery.of(context).size.width;
+
+/// gives the current screen height
+double getScreenHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height;
+
+String getTodoCardDisplayDate(DateTime date) {
+  final DateFormat formatter = DateFormat('MMMM dd');
+  return formatter.format(date).toString();
+}
 
 void showShortToast(String message) {
   Fluttertoast.showToast(
