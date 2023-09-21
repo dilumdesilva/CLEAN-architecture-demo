@@ -1,4 +1,4 @@
-import 'package:clean_architecture_demo/domain/model/model.dart';
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
 
 abstract class TodoDataSource {
   Future<List<TodoModel>?> getTodoList();

@@ -1,4 +1,4 @@
-import 'package:clean_architecture_demo/data/data_source/mock_data_source.dart';
+import 'package:clean_architecture_demo/data/data_source/firebase_data_source.dart';
 import 'package:clean_architecture_demo/data/data_source/todo_data_source.dart';
 import 'package:clean_architecture_demo/data/network/network_info.dart';
 import 'package:clean_architecture_demo/data/repository_impl/todo_repository_impl.dart';
@@ -15,7 +15,7 @@ Future<void> initAppModule() async {
 
   // remote data source instance
   getItInstance
-      .registerLazySingleton<TodoDataSource>(() => MockDataSourceImpl());
+      .registerLazySingleton<TodoDataSource>(() => FirebaseDataSource());
 
   // repository instance
   getItInstance.registerLazySingleton<TodoRepository>(

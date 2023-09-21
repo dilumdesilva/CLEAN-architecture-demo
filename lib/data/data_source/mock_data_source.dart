@@ -1,5 +1,5 @@
 import 'package:clean_architecture_demo/data/data_source/todo_data_source.dart';
-import 'package:clean_architecture_demo/domain/model/model.dart';
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
 
 class MockDataSourceImpl implements TodoDataSource {
   @override

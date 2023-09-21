@@ -1,5 +1,5 @@
 import 'package:clean_architecture_demo/data/network/failure.dart';
-import 'package:clean_architecture_demo/domain/model/model.dart';
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
 import 'package:either_dart/either.dart';
 
 abstract class TodoRepository {

@@ -1,3 +1,4 @@
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
 import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
 import 'package:clean_architecture_demo/presentation/utils/ui_utils.dart';
@@ -8,7 +9,7 @@ import 'app/di.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  _initializeFirebase();
+  await _initializeFirebase();
   await initAppModule();
   runApp(const MainApp());
 }
@@ -28,14 +29,29 @@ class MainApp extends StatefulWidget {
 class _DummyState extends State<MainApp> {
   @override
   void initState() {
-    getData();
     super.initState();
   }
 
-  getData() async {
-    final list = await getItInstance.get<TodoRepository>().getTodoList();
+  void createTodo() async {
+    final result = await getItInstance
+        .get<TodoRepository>()
+        .createTodo(TodoModel('Saurabh', 'Testing todo'));
 
-    showLongToast('Todo list : ${list.right.toString()}');
+    if (result.right != null) {
+      showLongToast('Todo created : ${result.right.toString()}');
+    } else {
+      showLongToast('Todo create failed  : ${result.left.toString()}');
+    }
+  }
+
+  void getTodoList() async {
+    final result = await getItInstance.get<TodoRepository>().getTodoList();
+
+    if (result.right != null) {
+      showLongToast('Fetch Todo list : ${result.right.toString()}');
+    } else {
+      showLongToast('Failed to fetch Todo list  : ${result.left.toString()}');
+    }
   }
 
   @override
@@ -52,10 +68,14 @@ class _DummyState extends State<MainApp> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text('Hello World!'),
+              const SizedBox(height: 20),
               ElevatedButton(
-                  onPressed: () => {
-                    getData()
-                  }, child: const Text('Press Me')),
+                  onPressed: () => {createTodo()},
+                  child: const Text('Create Todo')),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                  onPressed: () => {getTodoList()},
+                  child: const Text('Fetch Todo list')),
             ],
           ),
         ),
