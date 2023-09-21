@@ -1,7 +1,7 @@
 import 'package:clean_architecture_demo/data/data_source/todo_data_source.dart';
 import 'package:clean_architecture_demo/data/network/failure.dart';
 import 'package:clean_architecture_demo/data/network/network_info.dart';
-import 'package:clean_architecture_demo/domain/model/model.dart';
+import 'package:clean_architecture_demo/domain/model/todo_model.dart';
 import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
 import 'package:either_dart/either.dart';
 
