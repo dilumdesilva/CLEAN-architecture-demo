@@ -1,4 +1,5 @@
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
+import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -20,22 +21,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('My TODOs'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const Text('Hello World!'),
-              ElevatedButton(
-                  onPressed: () => {}, child: const Text('Press Me')),
-            ],
-          ),
-        ),
-      ),
+      home: const TodoCardsSecreen(),
       theme: getApplicationTheme(),
     );
   }
