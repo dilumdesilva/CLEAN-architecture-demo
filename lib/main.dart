@@ -4,6 +4,7 @@ import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_ca
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   await _initializeFirebase();
@@ -23,6 +24,11 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('es'), // Spanish
+      ],
       debugShowCheckedModeBanner: false,
       home: const TodoCardsSecreen(),
       theme: getApplicationTheme(),
