@@ -1,3 +1,8 @@
 {
-    "myTodos": "My TODOs"
+    "myTodos": "My TODOs",
+    "failedToFetchTodoCards": "Failed to fetch todo cards",
+    "delete": "Delete",
+    "pinToTop": "Pin to top",
+    "failedToFetchTodoList" : "Failed to fetch Todo list : {error}"
+
 }
