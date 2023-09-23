@@ -25,12 +25,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: const [
-        Locale('en'), // English
-        Locale('es'), // Spanish
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
-      home: const TodoCardsSecreen(),
+      home: const TodoCardsScreen(),
       theme: getApplicationTheme(),
     );
   }
