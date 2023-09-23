@@ -11,5 +11,5 @@ class CustomIcons {
 }
 
 class CustomImages {
-  String pinIcon = "$IMAGES_PATH/flutter_akl.png";
+  String flutterAKLLogo = "$IMAGES_PATH/flutter_akl.png";
 }
