@@ -44,7 +44,6 @@ ThemeData getApplicationTheme() {
         bodySmall: getRegularStyle(color: ColorManager.grey1),
         bodyLarge: getRegularStyle(color: ColorManager.grey)),
 
-
     //Elevated button theme
     elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -52,5 +51,11 @@ ThemeData getApplicationTheme() {
             backgroundColor: ColorManager.grey,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppSize.s12)))),
+
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: ColorManager.primary,
+        foregroundColor: ColorManager.white,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppSize.s120))),
   );
 }
