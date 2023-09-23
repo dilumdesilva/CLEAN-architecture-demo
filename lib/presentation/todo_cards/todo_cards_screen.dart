@@ -1,24 +1,24 @@
 import 'package:clean_architecture_demo/app/di.dart';
-import 'package:clean_architecture_demo/domain/model/todo_model.dart';
-import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
+import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
+import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
 import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
-import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards_state.dart';
-import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_crads_cubit.dart';
 import 'package:clean_architecture_demo/presentation/resources/values_manager.dart';
+import 'package:clean_architecture_demo/presentation/todo_cards/todo_cards_state.dart';
+import 'package:clean_architecture_demo/presentation/todo_cards/todo_crads_cubit.dart';
 import 'package:clean_architecture_demo/presentation/utils/ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class TodoCardsSecreen extends StatefulWidget {
-  const TodoCardsSecreen({
+class TodoCardsScreen extends StatefulWidget {
+  const TodoCardsScreen({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _TodoCardsSecreenState();
+  State<StatefulWidget> createState() => _TodoCardsScreenState();
 }
 
-class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
+class _TodoCardsScreenState extends State<TodoCardsScreen> {
   late TodoCardsCubit _todoCardsCubit;
 
   @override
@@ -30,7 +30,7 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
   Future<void> initialise() async {
     if (mounted) {
       _todoCardsCubit =
-          TodoCardsCubit(todoRepository: getItInstance.get<TodoRepository>());
+          TodoCardsCubit(getTodosUseCase: getItInstance.get<GetTodosUseCase>());
 
       _todoCardsCubit.getTodoCards();
     }
@@ -100,7 +100,7 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
     );
   }
 
-  Widget _buildBody(List<TodoModel> todoCards) {
+  Widget _buildBody(List<TodoEntity> todoCards) {
     return LayoutBuilder(builder: (context, dimens) {
       return ListView.builder(
         itemCount: todoCards.length,
@@ -111,7 +111,7 @@ class _TodoCardsSecreenState extends State<TodoCardsSecreen> {
     });
   }
 
-  Widget _buildCard(TodoModel todoCard) {
+  Widget _buildCard(TodoEntity todoCard) {
     double todoCardTextAreaWidth = getScreenWidth(context) * 0.7;
     return Padding(
       padding: const EdgeInsets.only(top: 20.0, left: 16.0, right: 16.0),

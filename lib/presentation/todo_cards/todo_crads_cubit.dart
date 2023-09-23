@@ -1,19 +1,17 @@
-import 'dart:async';
-
-import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
-import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards_state.dart';
+import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
+import 'package:clean_architecture_demo/presentation/todo_cards/todo_cards_state.dart';
 import 'package:clean_architecture_demo/presentation/utils/ui_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TodoCardsCubit extends Cubit<TodoCardsState> {
-  TodoCardsCubit({required this.todoRepository})
+  TodoCardsCubit({required this.getTodosUseCase})
       : super(const GetTodoCardsInProgress());
 
-  final TodoRepository todoRepository;
+  final GetTodosUseCase getTodosUseCase;
 
   void getTodoCards() async {
     emit(const GetTodoCardsInProgress());
-    final result = await todoRepository.getTodoList();
+    final result = await getTodosUseCase.execute(null);
 
     if (result.right != null) {
       emit(GetTodoCardsSuccess(todoCards: result.right));
