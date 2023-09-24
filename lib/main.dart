@@ -1,10 +1,11 @@
 import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
-import 'package:clean_architecture_demo/presentation/todo_cards/todo_cards_screen.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards.screen.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'firebase_options.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   await _initializeFirebase();
@@ -24,6 +25,8 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
       debugShowCheckedModeBanner: false,
       home: const TodoCardsScreen(),
       theme: getApplicationTheme(),

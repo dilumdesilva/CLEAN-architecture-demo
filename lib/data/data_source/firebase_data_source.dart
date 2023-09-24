@@ -24,9 +24,18 @@ class FirebaseDataSource implements TodoDataSource {
   }
 
   @override
-  Future<bool> deleteTodo(TodoEntity todoEntity) {
-    // TODO: implement deleteTodo
-    throw UnimplementedError();
+  Future<bool> deleteTodo(TodoEntity todoEntity) async {
+    String todoID = todoEntity.id;
+    DatabaseReference ref =
+        FirebaseDatabase.instance.ref('${FirebasePath.todoNode}/$todoID');
+    bool result = false;
+    await ref.remove().then((_) {
+      result = true;
+    }).catchError((error) {
+      result = false;
+    });
+
+    return result;
   }
 
   @override

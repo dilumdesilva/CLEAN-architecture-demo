@@ -1,3 +1,4 @@
+import 'package:clean_architecture_demo/presentation/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,9 @@ double getScreenWidth(BuildContext context) =>
 /// gives the current screen height
 double getScreenHeight(BuildContext context) =>
     MediaQuery.of(context).size.height;
+
+double getTodoCardTextAreaWidth(BuildContext context) => getScreenWidth(context) * 0.7;
+
 
 String getTodoCardDisplayDate(DateTime date) {
   final DateFormat formatter = DateFormat('MMMM dd');
