@@ -1,8 +1,8 @@
-import 'package:clean_architecture_demo/domain/model/todo_model.dart';
+import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:equatable/equatable.dart';
 
 class TodoCardsState extends Equatable {
-  final List<TodoModel>? todoCards;
+  final List<TodoEntity>? todoCards;
 
   final Error? error;
 

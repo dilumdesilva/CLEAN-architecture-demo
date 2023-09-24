@@ -1,18 +1,20 @@
 import 'dart:async';
 
 import 'package:clean_architecture_demo/data/data_source/todo_data_source.dart';
-import 'package:clean_architecture_demo/domain/model/todo_model.dart';
+import 'package:clean_architecture_demo/data/response/todo_model.dart';
+import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class FirebaseDataSource implements TodoDataSource {
   @override
-  Future<bool> createTodo(TodoModel todoModel) async {
+  Future<bool> createTodo(TodoEntity todoEntity) async {
     String key =
         FirebaseDatabase.instance.ref(FirebasePath.todoNode).push().key!;
+    todoEntity.id = key;
     DatabaseReference ref =
         FirebaseDatabase.instance.ref('${FirebasePath.todoNode}/$key');
     bool result = false;
-    await ref.set(todoModel.toJson()).then((_) {
+    await ref.set(todoEntity.toJson()).then((_) {
       result = true;
     }).catchError((error) {
       result = false;
@@ -22,7 +24,7 @@ class FirebaseDataSource implements TodoDataSource {
   }
 
   @override
-  Future<bool> deleteTodo(TodoModel todoModel) {
+  Future<bool> deleteTodo(TodoEntity todoEntity) {
     // TODO: implement deleteTodo
     throw UnimplementedError();
   }
@@ -47,7 +49,7 @@ class FirebaseDataSource implements TodoDataSource {
   }
 
   @override
-  Future<bool> updateTodo(TodoModel todoModel) {
+  Future<bool> updateTodo(TodoEntity todoEntity) {
     // TODO: implement updateTodo
     throw UnimplementedError();
   }

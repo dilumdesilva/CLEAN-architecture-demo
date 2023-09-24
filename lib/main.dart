@@ -1,8 +1,9 @@
 import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
-import 'package:clean_architecture_demo/presentation/resources/todo_cards/todo_cards.screen.dart';
-import 'package:flutter/material.dart';
+import 'package:clean_architecture_demo/presentation/todo_cards/todo_cards_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
+
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -24,7 +25,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: const TodoCardsSecreen(),
+      home: const TodoCardsScreen(),
       theme: getApplicationTheme(),
     );
   }
