@@ -62,9 +62,25 @@ class FirebaseDataSource implements TodoDataSource {
     // TODO: implement updateTodo
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> pinTodo(String todoID, bool isPinned) async {
+    DatabaseReference ref = FirebaseDatabase.instance
+        .ref('${FirebasePath.todoNode}/$todoID${FirebasePath.isPinnedNode}');
+
+    bool result = false;
+    await ref.set(isPinned).then((_) {
+      result = true;
+    }).catchError((error) {
+      result = false;
+    });
+
+    return result;
+  }
 }
 
 /// Add firebase node paths here
 class FirebasePath {
   static const String todoNode = '/todo/cards';
+  static const String isPinnedNode = '/isPinned';
 }

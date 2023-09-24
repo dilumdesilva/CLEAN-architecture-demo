@@ -6,6 +6,7 @@ import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
 import 'package:clean_architecture_demo/domain/usecase/create_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/delete_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
+import 'package:clean_architecture_demo/domain/usecase/pin_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/update_todo_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -36,4 +37,7 @@ Future<void> initAppModule() async {
 
   getItInstance.registerLazySingleton<UpdateTodoUseCase>(
       () => UpdateTodoUseCase(getItInstance()));
+
+  getItInstance.registerLazySingleton<PinTodoUseCase>(
+      () => PinTodoUseCase(getItInstance()));
 }

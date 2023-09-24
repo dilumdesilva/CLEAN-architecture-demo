@@ -68,4 +68,18 @@ class TodoRepositoryImpl implements TodoRepository {
     }
     return Left(DefaultFailure());
   }
+
+  @override
+  Future<Either<Failure, bool>> pinTodo(String id, bool isPinned) async {
+    if (await _networkInfo.isConnected) {
+      final result = await _todoDataSource.pinTodo(id, isPinned);
+
+      if (result) {
+        return const Right(true);
+      } else {
+        return Left(DefaultFailure());
+      }
+    }
+    return Left(DefaultFailure());
+  }
 }

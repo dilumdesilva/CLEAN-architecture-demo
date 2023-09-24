@@ -50,3 +50,16 @@ class DeleteTodoCardSuccess extends TodoCardsState {
 class DeleteTodoCardFailure extends TodoCardsState {
   const DeleteTodoCardFailure({super.failure});
 }
+
+// Pin Todo Card
+class PinTodoCardInProgress extends TodoCardsState {
+  const PinTodoCardInProgress();
+}
+
+class PinTodoCardSuccess extends TodoCardsState {
+  const PinTodoCardSuccess({super.todoCards});
+}
+
+class PinTodoCardFailure extends TodoCardsState {
+  const PinTodoCardFailure({super.failure});
+}
