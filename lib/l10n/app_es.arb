@@ -2,5 +2,10 @@
     "myTodos": "My TODOs",
     "failedToFetchTodoCards": "Failed to fetch todo cards",
     "delete": "Delete",
-    "pinToTop": "Pin to top"
+    "pinToTop": "Pin to top",
+    "failedToFetchTodoList" : "Failed to fetch Todo list : {error}",
+    "confirm": "Confirm",
+    "cancelText": "Cancel",
+    "yesText": "Yes",
+    "areYouSureYouWantToDeleteThisTodo": "Are you sure you want to delete this todo?"
 }
