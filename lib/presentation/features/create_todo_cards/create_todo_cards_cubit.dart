@@ -13,7 +13,7 @@ class CreateTodoCardsCubit extends Cubit<CreateTodoCardsState> {
   void createTodoCard(String title, String description) async {
     emit(const CreateTodoCardInProgress());
 
-    TodoEntity todoEntity = TodoEntity('id', title, description, false);
+    TodoEntity todoEntity = TodoEntity('', title, description, false);
 
     final result = await createTodoUseCase.execute(todoEntity);
 
