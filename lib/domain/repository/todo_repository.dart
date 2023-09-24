@@ -10,4 +10,6 @@ abstract class TodoRepository {
   Future<Either<Failure, bool>> deleteTodo(TodoEntity todoModel);
 
   Future<Either<Failure, bool>> updateTodo(TodoEntity todoModel);
+
+  Future<Either<Failure, bool>> pinTodo(String id, bool isPinned);
 }

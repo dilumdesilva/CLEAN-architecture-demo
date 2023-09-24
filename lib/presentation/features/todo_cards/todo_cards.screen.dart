@@ -2,9 +2,10 @@ import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:clean_architecture_demo/domain/usecase/delete_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
-import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
+import 'package:clean_architecture_demo/domain/usecase/pin_todo_usecase.dart';
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards_state.dart';
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_crads_cubit.dart';
+import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
 import 'package:clean_architecture_demo/presentation/resources/font_manager.dart';
 import 'package:clean_architecture_demo/presentation/resources/values_manager.dart';
 import 'package:clean_architecture_demo/presentation/utils/ui_utils.dart';
@@ -35,7 +36,8 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
     if (mounted) {
       _todoCardsCubit = TodoCardsCubit(
           getTodosUseCase: getItInstance.get<GetTodosUseCase>(),
-          deleterTodoUseCase: getItInstance.get<DeleteTodoUseCase>());
+          deleterTodoUseCase: getItInstance.get<DeleteTodoUseCase>(),
+          pinTodoUseCase: getItInstance.get<PinTodoUseCase>());
 
       _todoCardsCubit.getTodoCards();
     }
@@ -52,9 +54,6 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(l10n.myTodos),
-          actions: [
-            _buildCalendarAppBarButton(),
-          ],
         ),
         body: BlocProvider(
             create: (context) => _todoCardsCubit,
@@ -63,15 +62,18 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
               switch (state.runtimeType) {
                 case GetTodoCardsInProgress:
                 case DeleteTodoCardInProgress:
+                case PinTodoCardInProgress:
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 case GetTodoCardsSuccess:
                 case DeleteTodoCardSuccess:
+                case PinTodoCardSuccess:
                   final todoCards = state.todoCards;
                   return _buildBody(todoCards ?? []);
                 case GetTodoCardsFailure:
                 case DeleteTodoCardFailure:
+                case PinTodoCardFailure:
                   return Center(
                     child: Column(
                       children: [
@@ -164,8 +166,11 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: AppPadding.p8),
-                      child: Text(l10n.pinToTop,
-                          style: const TextStyle(color: Colors.white)),
+                      child: todoCard.isPinned
+                          ? Text(l10n.unPin,
+                              style: const TextStyle(color: Colors.white))
+                          : Text(l10n.pinToTop,
+                              style: const TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
@@ -175,14 +180,14 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
           if (direction == DismissDirection.endToStart) {
             _todoCardsCubit.deleteTodoCard(todoCard);
           } else if (direction == DismissDirection.startToEnd) {
-            //TODO: pin to top
+            _todoCardsCubit.pinTodoCard(todoCard);
           }
         },
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.endToStart) {
             return await _isDeletionConfirmed();
           } else if (direction == DismissDirection.startToEnd) {
-            //TODO: pin to top
+            return true;
           }
           return null;
         },
@@ -217,9 +222,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: FontSize.s14)),
                         const SizedBox(height: AppSize.s24),
-
-                        //TODO: get like todoCard.createdDate using timestamp
-                        Text(getTodoCardDisplayDate(DateTime.now()),
+                        Text(todoCard.id.substring(todoCard.id.length - 5),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: const TextStyle(fontSize: FontSize.s14)),
@@ -230,11 +233,14 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                 Padding(
                   padding: const EdgeInsets.only(
                       right: AppPadding.p8, top: AppPadding.p8),
-                  child: ImageIcon(
-                    AssetImage(AssetsManager.icons.pinIcon),
-                    color: Colors
-                        .red, //TODO: change the colour based on pinned or not
-                    size: AppSize.s20,
+                  child: Visibility(
+                    visible: todoCard.isPinned,
+                    child: ImageIcon(
+                      AssetImage(AssetsManager.icons.pinIcon),
+                      color: Colors
+                          .red,
+                      size: AppSize.s20,
+                    ),
                   ),
                 ),
               ],

@@ -9,4 +9,6 @@ abstract class TodoDataSource {
   Future<bool> deleteTodo(TodoEntity todoEntity);
 
   Future<bool> updateTodo(TodoEntity todoEntity);
+
+  Future<bool> pinTodo(String id, bool isPinned);
 }

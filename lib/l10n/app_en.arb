@@ -3,6 +3,7 @@
     "failedToFetchTodoCards": "Failed to fetch todo cards",
     "delete": "Delete",
     "pinToTop": "Pin to top",
+    "unPin": "Un-Pin",
     "failedToFetchTodoList" : "Failed to fetch Todo list : {error}",
     "confirm": "Confirm",
     "cancelText": "Cancel",
