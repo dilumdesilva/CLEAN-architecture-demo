@@ -2,7 +2,7 @@ import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:clean_architecture_demo/domain/usecase/delete_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/pin_todo_usecase.dart';
-import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards_state.dart';
+import 'package:clean_architecture_demo/presentation/features/view_todo_cards/todo_cards_state.dart';
 import 'package:clean_architecture_demo/presentation/utils/todo_utils.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
