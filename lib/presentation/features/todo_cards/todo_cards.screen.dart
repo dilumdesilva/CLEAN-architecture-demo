@@ -1,6 +1,7 @@
 import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
-import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
+import 'package:clean_architecture_demo/domain/usecase/delete_todo_usecase.dart';
+import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
 import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards_state.dart';
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_crads_cubit.dart';
@@ -32,8 +33,9 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
 
   Future<void> initialise() async {
     if (mounted) {
-      _todoCardsCubit =
-          TodoCardsCubit(todoRepository: getItInstance.get<TodoRepository>());
+      _todoCardsCubit = TodoCardsCubit(
+          getTodosUseCase: getItInstance.get<GetTodosUseCase>(),
+          deleterTodoUseCase: getItInstance.get<DeleteTodoUseCase>());
 
       _todoCardsCubit.getTodoCards();
     }
@@ -60,25 +62,30 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                 builder: (context, state) {
               switch (state.runtimeType) {
                 case GetTodoCardsInProgress:
+                case DeleteTodoCardInProgress:
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 case GetTodoCardsSuccess:
-                  final todoCards = (state as GetTodoCardsSuccess).todoCards;
+                case DeleteTodoCardSuccess:
+                  final todoCards = state.todoCards;
                   return _buildBody(todoCards ?? []);
                 case GetTodoCardsFailure:
+                case DeleteTodoCardFailure:
                   return Center(
                     child: Column(
                       children: [
                         const Icon(Icons.error,
                             size: AppSize.s50, color: Colors.red),
-                        Text(l10n.failedToFetchTodoCards),
+                        Text(state.failure!.message),
                       ],
                     ),
                   );
               }
 
-              return Container();
+              return Container(
+                child: const Text('it comes here'),
+              );
             })),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
@@ -118,8 +125,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
       padding: const EdgeInsets.only(
           top: AppPadding.p20, left: AppPadding.p16, right: AppPadding.p16),
       child: Dismissible(
-        //TODO: models needs the ID from snapshot key
-        key: const Key('card'),
+        key: Key(todoCard.id),
         secondaryBackground: Container(
             color: Colors.red,
             child: Align(
@@ -164,7 +170,22 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                   ],
                 ),
               ),
-            )), //TODO: replace with snapshot id
+            )),
+        onDismissed: (direction) async {
+          if (direction == DismissDirection.endToStart) {
+            _todoCardsCubit.deleteTodoCard(todoCard);
+          } else if (direction == DismissDirection.startToEnd) {
+            //TODO: pin to top
+          }
+        },
+        confirmDismiss: (direction) async {
+          if (direction == DismissDirection.endToStart) {
+            return await _isDeletionConfirmed();
+          } else if (direction == DismissDirection.startToEnd) {
+            //TODO: pin to top
+          }
+          return null;
+        },
         child: Card(
             elevation: 2,
             color: Colors.grey.shade100,
@@ -220,5 +241,33 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
             )),
       ),
     );
+  }
+
+  Future<bool> _isDeletionConfirmed() async {
+    Future<bool> isDeletionConfirmed = Future(() => false);
+    await showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text(l10n.confirm),
+              content: Text(l10n.areYouSureYouWantToDeleteThisTodo),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(l10n.yesText),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                    isDeletionConfirmed = Future(() => true);
+                  },
+                ),
+                TextButton(
+                  child: Text(l10n.cancelText),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                    isDeletionConfirmed = Future(() => false);
+                  },
+                )
+              ],
+              elevation: AppSize.s24,
+            ));
+    return isDeletionConfirmed;
   }
 }
