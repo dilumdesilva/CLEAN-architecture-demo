@@ -13,8 +13,9 @@ double getScreenHeight(BuildContext context) =>
 
 double getTodoCardTextAreaWidth(BuildContext context) => getScreenWidth(context) * 0.7;
 
+
 String getTodoCardDisplayDate(DateTime date) {
-  final DateFormat formatter = DateFormat(displayDateFormat);
+  final DateFormat formatter = DateFormat('MMMM dd');
   return formatter.format(date).toString();
 }
 

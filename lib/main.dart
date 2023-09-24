@@ -3,6 +3,7 @@ import 'package:clean_architecture_demo/presentation/resources/theme_manager.dar
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+
 import 'firebase_options.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

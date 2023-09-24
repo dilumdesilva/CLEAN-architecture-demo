@@ -1,7 +1,9 @@
 import 'package:clean_architecture_demo/data/data_source/todo_data_source.dart';
+import 'package:clean_architecture_demo/data/mapper.dart';
 import 'package:clean_architecture_demo/data/network/failure.dart';
 import 'package:clean_architecture_demo/data/network/network_info.dart';
-import 'package:clean_architecture_demo/domain/model/todo_model.dart';
+import 'package:clean_architecture_demo/data/response/todo_model.dart';
+import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
 import 'package:either_dart/either.dart';
 
@@ -12,9 +14,9 @@ class TodoRepositoryImpl implements TodoRepository {
   TodoRepositoryImpl(this._networkInfo, this._todoDataSource);
 
   @override
-  Future<Either<Failure, bool>> deleteTodo(TodoModel todoModel) async {
+  Future<Either<Failure, bool>> deleteTodo(TodoEntity todoEntity) async {
     if (await _networkInfo.isConnected) {
-      final result = await _todoDataSource.deleteTodo(todoModel);
+      final result = await _todoDataSource.deleteTodo(todoEntity);
 
       if (result) {
         return const Right(true);
@@ -26,12 +28,12 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Either<Failure, List<TodoModel>?>> getTodoList() async {
+  Future<Either<Failure, List<TodoEntity>>> getTodoList() async {
     if (await _networkInfo.isConnected) {
       final List<TodoModel>? result = await _todoDataSource.getTodoList();
 
       if (result != null) {
-        return Right(result);
+        return Right(result.map((e) => e.toDomain()).toList());
       } else {
         return Left(DefaultFailure());
       }
@@ -40,9 +42,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> createTodo(TodoModel todoModel) async {
+  Future<Either<Failure, bool>> createTodo(TodoEntity todoEntity) async {
     if (await _networkInfo.isConnected) {
-      final result = await _todoDataSource.createTodo(todoModel);
+      final result = await _todoDataSource.createTodo(todoEntity);
 
       if (result) {
         return const Right(true);
@@ -54,9 +56,9 @@ class TodoRepositoryImpl implements TodoRepository {
   }
 
   @override
-  Future<Either<Failure, bool>> updateTodo(TodoModel todoModel) async {
+  Future<Either<Failure, bool>> updateTodo(TodoEntity todoEntity) async {
     if (await _networkInfo.isConnected) {
-      final result = await _todoDataSource.updateTodo(todoModel);
+      final result = await _todoDataSource.updateTodo(todoEntity);
 
       if (result) {
         return const Right(true);

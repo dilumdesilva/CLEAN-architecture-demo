@@ -1,5 +1,5 @@
 import 'package:clean_architecture_demo/app/di.dart';
-import 'package:clean_architecture_demo/domain/model/todo_model.dart';
+import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:clean_architecture_demo/domain/repository/todo_repository.dart';
 import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
 import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards_state.dart';
@@ -101,7 +101,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
     );
   }
 
-  Widget _buildBody(List<TodoModel> todoCards) {
+  Widget _buildBody(List<TodoEntity> todoCards) {
     return LayoutBuilder(builder: (context, dimens) {
       return ListView.builder(
         itemCount: todoCards.length,
@@ -113,7 +113,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
   }
 
   //TODO: extract out as a widget TodoCard
-  Widget _buildCard(TodoModel todoCard) {
+  Widget _buildCard(TodoEntity todoCard) {
     return Padding(
       padding: const EdgeInsets.only(
           top: AppPadding.p20, left: AppPadding.p16, right: AppPadding.p16),
