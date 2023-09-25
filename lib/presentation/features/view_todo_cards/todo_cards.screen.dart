@@ -3,8 +3,9 @@ import 'package:clean_architecture_demo/domain/entity/todo_entity.dart';
 import 'package:clean_architecture_demo/domain/usecase/delete_todo_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/get_todos_usecase.dart';
 import 'package:clean_architecture_demo/domain/usecase/pin_todo_usecase.dart';
-import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards_state.dart';
-import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_crads_cubit.dart';
+import 'package:clean_architecture_demo/presentation/features/create_todo_cards/create_todo_cards_screen.dart';
+import 'package:clean_architecture_demo/presentation/features/view_todo_cards/todo_cards_state.dart';
+import 'package:clean_architecture_demo/presentation/features/view_todo_cards/todo_crads_cubit.dart';
 import 'package:clean_architecture_demo/presentation/resources/assets_manager.dart';
 import 'package:clean_architecture_demo/presentation/resources/font_manager.dart';
 import 'package:clean_architecture_demo/presentation/resources/values_manager.dart';
@@ -53,6 +54,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Text(l10n.myTodos),
         ),
         body: BlocProvider(
@@ -85,40 +87,42 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                   );
               }
 
-              return Container(
-                child: const Text('it comes here'),
+              return Center(
+                child: Text(l10n.somethingWentWrongPleaseTryAgain),
               );
             })),
         floatingActionButton: FloatingActionButton(
             onPressed: () {
-              //TODO: build the navigation to next screen
+              //TODO: move to a router constants
+              final createTodoCardsScreenRoute = MaterialPageRoute(
+                  builder: (context) => const CreateTodoCardsScreen());
+              Navigator.push(context, createTodoCardsScreenRoute);
             },
             child: const Icon(Icons.add)));
   }
 
-  Widget _buildCalendarAppBarButton() {
-    return Padding(
-      padding: const EdgeInsets.all(AppPadding.p20),
-      child: InkWell(
-        onTap: () => {
-          //TODO: navigate to calendar screen
-        },
-        child: const Icon(
-          Icons.calendar_month,
-        ),
-      ),
-    );
+  Widget _buildBody(List<TodoEntity> todoCards) {
+    return todoCards.isEmpty
+        ? _buildTodoCardsBodyWhenNoTodos()
+        : LayoutBuilder(builder: (context, dimens) {
+            return ListView.builder(
+              itemCount: todoCards.length,
+              itemBuilder: (context, index) {
+                return _buildCard(todoCards[index]);
+              },
+            );
+          });
   }
 
-  Widget _buildBody(List<TodoEntity> todoCards) {
-    return LayoutBuilder(builder: (context, dimens) {
-      return ListView.builder(
-        itemCount: todoCards.length,
-        itemBuilder: (context, index) {
-          return _buildCard(todoCards[index]);
-        },
-      );
-    });
+  Widget _buildTodoCardsBodyWhenNoTodos() {
+    return Center(
+      child: Column(
+        children: [
+          const Icon(Icons.error, size: AppSize.s50, color: Colors.grey),
+          Text(l10n.noTodosFoundCreateYourFirstTodo),
+        ],
+      ),
+    );
   }
 
   //TODO: extract out as a widget TodoCard
@@ -161,7 +165,6 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                     ImageIcon(
                       AssetImage(AssetsManager.icons.pinIcon),
                       color: Colors.white,
-                      //TODO: change the colour based on pinned or not
                       size: AppSize.s20,
                     ),
                     Padding(
@@ -237,8 +240,7 @@ class _TodoCardsScreenState extends State<TodoCardsScreen> {
                     visible: todoCard.isPinned,
                     child: ImageIcon(
                       AssetImage(AssetsManager.icons.pinIcon),
-                      color: Colors
-                          .red,
+                      color: Colors.red,
                       size: AppSize.s20,
                     ),
                   ),

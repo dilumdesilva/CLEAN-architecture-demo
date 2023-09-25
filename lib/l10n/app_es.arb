@@ -8,5 +8,7 @@
     "confirm": "Confirm",
     "cancelText": "Cancel",
     "yesText": "Yes",
-    "areYouSureYouWantToDeleteThisTodo": "Are you sure you want to delete this todo?"
+    "areYouSureYouWantToDeleteThisTodo": "Are you sure you want to delete this todo?",
+     "noTodosFoundCreateYourFirstTodo": "No todos found create your first TODO",
+     "somethingWentWrongPleaseTryAgain": "Something went wrong please try again"
 }

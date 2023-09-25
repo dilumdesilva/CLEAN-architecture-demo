@@ -1,6 +1,6 @@
 import 'package:clean_architecture_demo/app/di.dart';
 import 'package:clean_architecture_demo/presentation/resources/theme_manager.dart';
-import 'package:clean_architecture_demo/presentation/features/todo_cards/todo_cards.screen.dart';
+import 'package:clean_architecture_demo/presentation/features/view_todo_cards/todo_cards.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
